@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommendation Results</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('/static/farming.jpg') no-repeat center center/cover;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar-resultpage {
+            background-color: #28a745; /* Green */
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .result-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            flex-grow: 1;
+           
+        }
+
+        .service-box {
+            background: rgb(255, 251, 251); /* Transparent background */
+            border-radius: 12px;
+            padding: 15px;
+            width: 300px;
+            height: 350px;
+            margin: 15px;
+            box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s ease-in-out;
+            /* backdrop-filter: blur(5px); Glass effect */
+        }
+
+        .service-box:hover {
+            transform: scale(1.05);
+        }
+
+        .service-box img {
+            width: 250px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 10px;
+        padding-top: 23px;
+        }
+
+        .service-box h3 {
+            margin: 5px 0;
+            font-size: 18px;
+            color: white;
+        }
+
+        .service-description {
+            font-size: 14px;
+            color: rgb(11, 10, 10);
+            text-align: center;
+            height: 50px;
+            overflow: hidden;
+        }
+        .display-service-name{
+            font-size: 14px;
+            color: rgb(11, 10, 10);
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .btn {
+            background: #28a745; /* Green */
+            color: white;
+            border: none;
+            padding: 7px 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+            width: 80px;
+        }
+
+        .btn:hover {
+            background: #218838;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+            text-align: center;
+            font-size: 18px;
+        }
+        .go-back-button{
+            position: absolute;
+            left: 20px;
+      
+            border: none;
+            padding: 7px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+            
+            transition: background 0.3s ease-in-out;
+        }
+        .go-back-button:hover{
+            background: #218838;
+        }
+
+        /* Grid layout for 3 cards per row */
+        @media (min-width: 950px) {
+            .result-container {
+                /* display: grid;
+                grid-template-columns: repeat(3, 1fr); */
+                gap: 20px;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar-resultpage">
+        <button class="go-back-button" onclick="goback()">Go Back</button>
+        Recommendation Services For Farmer
+       
+    </div>
+
+    <div class="result-container">
+        {% if recommendations %}
+            {% for service in recommendations %}
+                <div class="service-box">
+                    <img src="{{ service_images[service] }}" alt="{{ service }}">
+                    
+                    <p class="display-service-name">{{service}}</p>
+                    <p class="service-description"> {{ services[service] }}</p>
+                    <button class="btn" onclick="viewDetails('{{ service }}')">View</button>
+                </div>
+            {% endfor %}
+        {% elif error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+    </div>
+
+    <script>
+        function goback(){
+            window.location.href = "./";
+        }
+        function viewDetails(service) {
+            var formattedService = service.replace(/\s+/g, '_');  // Replace spaces with underscores
+            window.location.href = "/services/" + formattedService;
+            }
+
+    </script>
+</body>
+</html>
